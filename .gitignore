@@ -13,8 +13,8 @@ pnpm-lock.yaml
 .DS_Store
 
 # Bundle
-docs/.vitepress/cache
-# docs/.vitepress/dist
+.vitepress/cache
+# .vitepress/dist
 
 # local
 *.local
