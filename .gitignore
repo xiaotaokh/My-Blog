@@ -14,7 +14,7 @@ pnpm-lock.yaml
 
 # Bundle
 docs/.vitepress/cache
-docs/.vitepress/dist
+# docs/.vitepress/dist
 
 # local
 *.local
