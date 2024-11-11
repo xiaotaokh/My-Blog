@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "dev": "vitepress dev",
-    "build": "vitepress build --outDir dist",
+    "build": "vitepress build --outDir docs",
     "preview": "vitepress preview --port 8080"
   },
   "devDependencies": {
