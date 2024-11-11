@@ -1,0 +1,21 @@
+# Editor directories and files
+.idea
+.vscode
+
+# Package Manager
+node_modules
+logger
+.pnpm-debug.log*
+.pnpm-store
+pnpm-lock.yaml
+
+# System
+.DS_Store
+
+# Bundle
+docs/.vitepress/cache
+docs/.vitepress/dist
+
+# local
+*.local
+.history
