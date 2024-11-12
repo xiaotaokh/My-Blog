@@ -3,23 +3,23 @@
 layout: home
 
 hero:
-  name: "My Blog"
-  text: "由vitePress构建"
-  tagline: My great project tagline
+  name: "xiaotaokh"
+  text: "vitePress"
+  tagline: 我的伟大项目标语
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: Markdown 示例
+      link: /Examples/markdown-examples
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: API 示例
+      link: /Examples/api-examples
 
 features:
-  - title: Feature A
+  - title: 特征 A
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
+  - title: 功能 B
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
+  - title: 功能 C
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 ---
 
