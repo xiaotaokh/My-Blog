@@ -1,6 +1,6 @@
 # 构建 VitePress 站点并将其部署到 GitHub Pages 的示例工作流程
-#
-name: Deploy VitePress site to Pages
+
+name: 自动化部署到GitHub Pages
 
 on:
   # 在针对 `main` 分支的推送上运行。如果你
@@ -28,39 +28,53 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: 将 GitHub 仓库中的代码 克隆（checkout）到当前的 CI 环境中，供后续的构建、测试、部署等步骤使用。
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # 如果未启用 lastUpdated，则不需要
-      # - uses: pnpm/action-setup@v3 # 如果使用 pnpm，请取消此区域注释
-      #   with:
-      #     version: 9
-      # - uses: oven-sh/setup-bun@v1 # 如果使用 Bun，请取消注释
-      - name: Setup Node
+
+      - name: 配置 pnpm 包管理工具
+        uses: pnpm/action-setup@v3 # 如果不使用 pnpm，请注释此区域
+        with:
+          version: 8.15.1
+
+      - name: 缓存 pnpm 依赖，加速构建
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store  # 缓存 pnpm 的依赖存储目录
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}  # 缓存键，基于 pnpm-lock.yaml 文件的哈希值生成
+          restore-keys: | # 可选值，指定在没有完全匹配的缓存时，可以尝试恢复的缓存键。
+            ${{ runner.os }}-pnpm-
+
+      - name: 配置 Node.js 环境
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm # 或 pnpm / yarn
-      - name: Setup Pages
+          node-version: 20.7.0
+          cache: pnpm # 或 npm / yarn
+
+      - name: 设置页面
         uses: actions/configure-pages@v4
-      - name: Install dependencies
-        run: npm ci # 或 pnpm install / yarn install / bun install
-      - name: Build with VitePress
-        run: npm run build # 或 pnpm build / yarn build / bun run build
-      - name: Upload artifact
+
+      - name: 安装项目依赖
+        run: pnpm install # 或 npm ci / yarn install / bun install
+
+      - name: 执行构建命令（pnpm build）
+        run: pnpm build # 或 npm run build / yarn build / bun run build
+
+      - name: 上传构建后的文件夹（docs）作为 GitHub Pages 的构建产物(制品)
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .vitepress/dist
+          path: docs
 
-  # 部署工作
+  # 部署到 GitHub Pages
   deploy:
     environment:
-      name: github-pages
+      name: github-pages url
       url: ${{ steps.deployment.outputs.page_url }}
     needs: build
     runs-on: ubuntu-latest
     name: Deploy
     steps:
-      - name: Deploy to GitHub Pages
+      - name: 部署到GitHub页面
         id: deployment
         uses: actions/deploy-pages@v4
