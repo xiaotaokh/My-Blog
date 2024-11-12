@@ -7,12 +7,12 @@ node_modules
 logger
 .pnpm-debug.log*
 .pnpm-store
-pnpm-lock.yaml
+# pnpm-lock.yaml
 
 # System
 .DS_Store
 
-# Bundle
+# Bundle & Runtime
 .vitepress/cache
 # .vitepress/dist
 
