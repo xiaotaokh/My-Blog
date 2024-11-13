@@ -2,10 +2,11 @@
   "type": "module",
   "scripts": {
     "dev": "vitepress dev",
-    "build": "vitepress build --outDir docs",
+    "build": "vitepress build",
     "preview": "vitepress preview --port 8080"
   },
   "devDependencies": {
+    "sass": "^1.80.6",
     "vitepress": "^1.5.0"
   }
 }
