@@ -17,6 +17,12 @@ export default defineConfig(({ command, mode }) => {
     base: mode === 'production' ? "/blog/" : "/",
     // Vite 配置选项
     vite: {
+      /**
+       * 静态资源文件夹，默认访问srcDir配置的路径, 构建是会放在outDir根目录，默认为public,
+       * srcDir配置为'.'或者'./'时，publicDir需要为public
+       * srcDir配置为'.src'时，publicDir需要为 ../public, 相对于src/去设置
+       */
+      publicDir: '../public',
       // 插件
       server: {
         host: true, // 指定服务器应该监听哪个 IP 地址。 如果将此设置为 0.0.0.0 或者 true 将监听所有地址，包括局域网和公网地址。
@@ -47,38 +53,36 @@ export default defineConfig(({ command, mode }) => {
     markdown: {},
     
     head: [
-      // ['meta', { httpEquiv: 'refresh', content: '0; url=/views/home' }], // 重定向到 /views/home
       ['link', { rel: 'stylesheet', href: '//at.alicdn.com/t/c/font_4743040_m7ehua33vvr.css' }], // iconfont
-      ['link', { rel: 'icon', href: '/favicon/favicon.png' }],  // 网站图标，相对于项目根目录，受srcDir字段影响（暂时不知道为啥）
+      // 网站图标，相对于项目根目录，生产环境下需要base字段前缀
+      ['link', { rel: 'icon', href: `${ mode === 'production' ? "/blog/" : "/" }favicon/favicon.png` }],
     ],
     /**
      * markdown文件所在的根目录，相对于项目根目录进行设置。不会直接影响 public 文件夹。
-     * . 和 ./ 一样
-     * 配置为 ./src 后会导致public文件夹build后不出现在docs里（暂时不知道为啥）
+     * . 和 ./ 一样，都代表根目录
+     * 配置为 ./src 后会导致public文件夹build后不出现在docs里（暂时不知道为啥），需要配置vite.publicDir='../public'
      */
-    srcDir: ".",
+    srcDir: "./src",
     srcExclude: ['**/README.md', '**/TODO.md'], // 用于匹配应排除作为源内容输出的 markdown 文件
     outDir: "./docs", // 项目的构建输出位置, 或者在package.json 中 scripts.build 配置 vitepress build --outDir docs
-    assetsDir: "static", // 指定放置生成的静态资源的目录，仅影响在 Markdown 文件和组件中引入的静态资源（如图片、JS、CSS 等）
+    assetsDir: "static", // 指定build，在docs目录下放置生成的静态资源的文件夹名，仅影响在 Markdown 文件和组件中引入的静态资源（如图片、JS、CSS 等）
     cacheDir: "./.vitepress/cache", // 缓存文件的目录，相对于项目根目录
     metaChunk: true, // 当设置为 true 时，将页面元数据提取到单独的 JavaScript 块中，而不是内联在初始 HTML 中。
     // 主题配置 https://vitepress.dev/reference/default-theme-config
     themeConfig: {
       // 路由重定向
-      redirects: {
-        '/views/examples/markdown-examples': '/markdown-examples', // 重定向旧路径到新路径
-      },
+      redirects: {},
       nav: [
         { text: '首页', link: '/' },
-        { text: '示例', link: '/src/views/examples/markdown-examples' }
+        { text: '示例', link: '/views/examples/markdown-examples' }
       ],
       
       sidebar: [
         {
           text: '示例',
           items: [
-            { text: 'Markdown 示例', link: '/src/views/examples/markdown-examples' },
-            { text: 'API 示例', link: '/src/views/examples/api-examples' }
+            { text: 'Markdown 示例', link: '/views/examples/markdown-examples' },
+            { text: 'API 示例', link: '/views/examples/api-examples' }
           ]
         }
       ],
